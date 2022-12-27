@@ -1,0 +1,22 @@
+@use '/src/styles/vars';
+
+.form-create-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  & > .form-label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    font-weight: bold;
+
+  }
+  & > .form-submit {
+    width: 100px;
+  }
+  
+}

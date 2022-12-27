@@ -1,0 +1,9 @@
+@use '/src/styles/vars';
+
+.body{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
