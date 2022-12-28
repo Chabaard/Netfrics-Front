@@ -53,16 +53,19 @@ function PlaySerie() {
     },
     gotLatestViewed() {
       if (document.getElementById('seasons') && !document.getElementById('video')) {
+        let find = false;
         handlerSeries.getSeries().seasons.every((season) => {
+          if (find) return false;
           season.episodes.every((ep) => {
             if (!ep.finished) {
               handlerSeries.changeSeason(season.number);
               handlerSeries.changeEpisode(season, ep.number);
+              find = true;
               return false;
             }
             return true;
           });
-          return false;
+          return true;
         });
       }
     },
@@ -106,10 +109,6 @@ function PlaySerie() {
         console.log('no type found');
     }
   }, [id]);
-
-  useEffect(() => {
-    handlerSeries.gotLatestViewed();
-  }, [data]);
 
   return (
     (

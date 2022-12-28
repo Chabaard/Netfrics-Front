@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 // == Import
 import './styles.scss';
 import React from 'react';
@@ -25,17 +26,17 @@ function App() {
 
   function dispatcher() {
     async function Users() {
-      const response = await request.get('listusers');
+      const response = await request.get(`listusers`);
       dispatch(setUsersData(response));
     }
 
     async function Movies() {
-      const response = await request.get('listmovies');
+      const response = await request.get(`listmovies/${user.id}`);
       dispatch(setMoviesData(response));
     }
 
     async function Series() {
-      const response = await request.get('listseries');
+      const response = await request.get(`listseries/${user.id}`);
       response[0].name = 'Séries';
       dispatch(setSeriesData(response[0]));
     }
