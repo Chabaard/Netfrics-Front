@@ -4,7 +4,8 @@
 // function
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { request } from '../../../utils/request';
 
 // Component
 import Famille from '../Body/Famille';
@@ -14,21 +15,21 @@ import Video from './Video';
 // Style
 import './styles.scss';
 
-function PlaySerie() {
+function Play() {
   const user = useSelector((state) => state.user); // utilisateur
   const dataSeries = useSelector((state) => state.listSeries); // list des series // permet d'afficher la liste des autres series
   const dataMovies = useSelector((state) => state.listMovies);// list des movies de la famille du film // permet d'afficher la liste des autres films de la famille
   const id = useSelector((state) => state.id) || useParams().id; // serie id
   const { type } = useParams();
   const [data, setData] = useState();
+  const navigate = useNavigate();
 
   const handlerSeries = {
     init() {
       if (data) setData(null);
-      handlerSeries.gotLatestViewed();
     },
-    getSeries: () => dataSeries.series.filter((s) => s.id === id)[0],
-    getSeason: (number) => handlerSeries.getSeries().seasons.filter((s) => s.number === Number(number))[0],
+    getSeries: (seriesList = dataSeries) => seriesList.series.filter((s) => s.id === id)[0],
+    getSeason: (number) => handlerSeries.getSeries(dataSeries).seasons.filter((s) => s.number === Number(number))[0],
     getEpisode: (season, number) => season.episodes.filter((ep) => ep.number === Number(number))[0],
     changeSeason(num, previous) {
       const newSaison = handlerSeries.getSeason(num);
@@ -51,10 +52,11 @@ function PlaySerie() {
       }
       return false;
     },
-    gotLatestViewed() {
+    async gotLatestViewed() {
       if (document.getElementById('seasons') && !document.getElementById('video')) {
         let find = false;
-        handlerSeries.getSeries().seasons.every((season) => {
+        const response = await request.get(`listseries/${user.id}`);
+        handlerSeries.getSeries(response[0]).seasons.every((season) => {
           if (find) return false;
           season.episodes.every((ep) => {
             if (!ep.finished) {
@@ -75,13 +77,13 @@ function PlaySerie() {
       return true;
     },
   };
+
   const handlerMovies = {
     getMovies() {
       dataMovies.forEach((f) => {
         f.films.forEach((m) => {
           if (m.id === id) {
             setData(m);
-            console.log(m);
           }
         });
       });
@@ -89,14 +91,20 @@ function PlaySerie() {
     getFamily() {
       return dataMovies.filter((fam) => fam.id === data.families_id)[0];
     },
-    getSeason: (number) => handlerSeries.getSeries().seasons.filter((s) => s.number === Number(number))[0],
     previousOrNextEpisode(num) {
-      let previous = false;
-      if (num === -1) previous = true;
-      handlerSeries.changeEpisode(handlerSeries.getSeason(data.seasonsNumber), data.number + num);
-      handlerSeries.changeSeason(handlerSeries.getSeason(data.seasonsNumber).number + num, previous);
+      const newMovie = handlerMovies.getFamily().films.filter((f) => f.number === data.number + num)[0];
+      if (newMovie) {
+        setData(newMovie);
+        navigate(`/movies/${newMovie.id}`);
+      }
     },
   };
+
+  useEffect(() => {
+    if (!data) {
+      handlerSeries.gotLatestViewed();
+    }
+  }, [data]);
   useEffect(() => {
     switch (type) {
       case 'series':
@@ -110,30 +118,51 @@ function PlaySerie() {
     }
   }, [id]);
 
+  function getvideo() {
+    const newData = {};
+    switch (type) {
+      case 'series':
+        newData.name = dataSeries.name;
+        newData.data = dataSeries.series;
+        newData.type = type;
+        newData.changeEp = handlerSeries.previousOrNextEpisode;
+        break;
+      case 'movies':
+        newData.name = handlerMovies.getFamily().name;
+        newData.data = handlerMovies.getFamily().films;
+        newData.type = type;
+        newData.changeEp = handlerMovies.previousOrNextEpisode;
+        break;
+      case 'mangas':
+        newData.name = handlerMovies.getFamily().name;
+        newData.data = handlerMovies.getFamily().films;
+        newData.type = type;
+        newData.changeEp = handlerSeries.previousOrNextEpisode;
+        console.log('waiting mangas');
+        break;
+      default:
+        console.log('no type found');
+    }
+    return (
+      <>
+        <h2 className="title">{data.name}</h2>
+        <Video
+          {...data}
+          changeEp={newData.changeEp}
+        />
+        <Famille {...newData} />
+      </>
+    );
+  }
+
   return (
     (
-      <div className="play-serie">
-        {type === 'series' ? <DropDownSelect serie={handlerSeries.getSeries()} saison={data ? handlerSeries.getSeason(data.seasonsNumber) : null} episode={data} handlerSeries={handlerSeries} /> : ''}
-        {
-        data ? (
-          <>
-            <h2 className="title">{data.name}</h2>
-            <Video
-              key={data.id}
-              {...data}
-              changeEp={handlerSeries.previousOrNextEpisode}
-              user={user}
-            />
-            { type === 'series'
-              ? <Famille key={type} name={dataSeries.name} data={dataSeries.series} {...{ type: type }} />
-              : <Famille key={type} name={handlerMovies.getFamily().name} data={handlerMovies.getFamily().films} {...{ type: type }} /> }
-          </>
-        )
-          : ''
-        }
+      <div className="play">
+        {type === 'series' ? <DropDownSelect saison={data ? handlerSeries.getSeason(data.seasonsNumber) : null} episode={data} handlerSeries={handlerSeries} /> : ''}
+        { data ? getvideo() : '' }
       </div>
     )
   );
 }
 // == Export
-export default React.memo(PlaySerie);
+export default React.memo(Play);

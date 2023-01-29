@@ -28,13 +28,13 @@ function Signup({ setOpen }) {
     <form className="form-create-user" onSubmit={submit}>
       <label className="form-label" htmlFor="login">
         Pseudo
-        <input onChange={handleLoginSelected} type="text" name="login" required />
+        <input className="input-text" onChange={handleLoginSelected} type="text" name="login" required />
       </label>
       <label className="form-label" htmlFor="login">
         Photo de Profil
-        <input onChange={handleFileSelected} type="file" name="picture" accept="image/png, image/jpeg, image/jpg" required />
+        <input className="input-text" onChange={handleFileSelected} type="file" name="picture" accept="image/png, image/jpeg, image/jpg" required />
       </label>
-      <input className="form-submit" type="submit" value="Envoyer" />
+      <input className="form-submit input-button" type="submit" value="Envoyer" />
     </form>
   );
 }

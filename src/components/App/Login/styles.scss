@@ -1,10 +1,25 @@
 @use '/src/styles/vars';
 
+@keyframes example {
+  from {box-shadow: 0 0 20px 2px vars.$background-secondary-color;}
+  to {box-shadow: 0 0 20px 2px vars.$primary-color;}
+}
+
 .user-choice {
+  animation: example 4s infinite 4s alternate;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: vars.$background-secondary-color;
+  border-radius: 2vh;
+  box-shadow: 0 0 20px 2px vars.$background-secondary-color;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  max-width: 100%;
+  width: auto;
   gap: 1rem;
 
   & > .title {
@@ -14,24 +29,31 @@
 
   & > .list-users {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     padding: 0 1.5rem;
+    height: 100%;
     width: 100%;
+    max-width: 100%;
     min-height: 220px;
     overflow-x: auto;
+    gap: 2rem;
 
     & > .container{
       display: flex;
       flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
+      width: 100%;
 
       .user{
         cursor: pointer;
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
         align-items: center;
+        width: 100%;
         gap: 1rem;
 
         &:hover > .login{
@@ -58,6 +80,8 @@
         }
 
         & > .login {
+          white-space: nowrap;
+          width: 100%;
           font-weight: bold;
           transition: transform 0.5s, text-shadow 0.5s;
         }   

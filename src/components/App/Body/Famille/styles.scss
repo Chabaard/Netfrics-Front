@@ -11,8 +11,9 @@
   }
   &-affiches {
     align-items: center;
-    padding: 1rem 1.5rem;
-    height: 215px;
+    padding: 1rem 1.2rem;
+    height: 14vw;
+    min-height: 220px;
     max-width: 100%;
     min-width: 300px;
     gap: 0.5rem;
@@ -26,7 +27,8 @@
 .too-many{
   width: 100%;
   &-affiches{
-    height: 390px;
+    min-height: 390px;
+    height: 25vw;
     width: 100%;
     flex-direction: column;
     flex-wrap: wrap;

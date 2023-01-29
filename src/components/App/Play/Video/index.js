@@ -4,15 +4,20 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { request } from '../../../../utils/request';
 import PanelVideo from './PanelVideo';
 import './styles.scss';
 
-function Video({ id, path, poster, seriesId, seasonsId, number, changeEp, user }) {
-  // const user = useSelector((state) => state.user);
+function Video({ id, path, poster, seriesId, seasonsId, number, changeEp }) {
+  const user = useSelector((state) => state.user); // utilisateur
+  const { type } = useParams();
+
   let videoData = null;
   let timer = null;
   let isEnd = false;
+
   const app = {
     btnFinished: null,
     video: null,
@@ -79,7 +84,16 @@ function Video({ id, path, poster, seriesId, seasonsId, number, changeEp, user }
         app.video.addEventListener('timeupdate', app.handlerPanel.handlerBtnFinished);
       },
       async getUserVideoData() {
-        videoData = await request.get(`serieviewed/${id}/${user.id}`);
+        switch (type) {
+          case 'series':
+            videoData = await request.get(`serieviewed/${id}/${user.id}`);
+            break;
+          case 'movies':
+            videoData = await request.get(`movieviewed/${id}/${user.id}`);
+            break;
+          default:
+            console.log('no type found');
+        }
         if (videoData && Math.round(app.video.currentTime) !== videoData.timer) {
           app.video.currentTime = videoData.timer;
         }
@@ -106,14 +120,24 @@ function Video({ id, path, poster, seriesId, seasonsId, number, changeEp, user }
         if (!videoData && actualTimer < 30) return;
         if (videoData && actualTimer > (videoData.timer - 20) && actualTimer < (videoData.timer + 20)) return;
         const data = {
-          series_id: seriesId,
-          seasons_id: seasonsId,
           users_id: user.id,
-          episodes_id: id,
           timer: Math.round(actualTimer),
           finished: app.handlerVideo.isItFinished(),
         };
-        await request.post('serieviewed', data, 'json');
+        switch (type) {
+          case 'series':
+            data.series_id = seriesId;
+            data.seasons_id = seasonsId;
+            data.episodes_id = id;
+            await request.post('serieviewed', data, 'json');
+            break;
+          case 'movies':
+            data.movies_id = id;
+            await request.post('movieviewed', data, 'json');
+            break;
+          default:
+            console.log('no type found');
+        }
       },
     },
   };
@@ -129,7 +153,7 @@ function Video({ id, path, poster, seriesId, seasonsId, number, changeEp, user }
     catch (err) {
       console.log("Retourner l'erreur au dev", err);
     }
-  }, []);
+  });
 
   return (
     <div id="container-video" className="container">
@@ -148,7 +172,6 @@ Video.propTypes = {
   seriesId: PropTypes.number,
   seasonsId: PropTypes.number,
   changeEp: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
 };
 Video.defaultProps = {
   seasonsId: null,

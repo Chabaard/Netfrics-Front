@@ -3,38 +3,56 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { openModal } from '../../../utils/modal';
 import './styles.scss';
 
 function NavBar({ login, picture }) {
+  console.log('navbar');
+  const [cookieUser, setCookieUser, removeCookieUser] = useCookies(['user']);
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isPanelAdmin = location.pathname.includes('/admin');
 
   return (
     <div className="navbar">
       <div className="links">
-        <NavLink className={({ isActive }) => (isActive ? 'current' : '')} to="/accueil">
-          <h2 className="link">Accueil</h2>
+        <NavLink className="link" to="/accueil">
+          Accueil
         </NavLink>
-
-        <NavLink className={({ isActive }) => (isActive ? 'current' : '')} to="/films">
-          <h2 className="link">Films</h2>
-        </NavLink>
-
-        <NavLink className={({ isActive }) => (isActive ? 'current' : '')} to="/series">
-          <h2 className="link">Séries</h2>
-        </NavLink>
-
-        <NavLink className={({ isActive }) => (isActive ? 'current' : '')} to="/mangas">
-          <h2 className="link">Mangas</h2>
-        </NavLink>
-
-        <NavLink className={({ isActive }) => (isActive ? 'current' : '')} to="/admin">
-          <h2 className="link">Admin</h2>
-        </NavLink>
+        { !isPanelAdmin ? (
+          <>
+            <NavLink className="link" to="/films">
+              Films
+            </NavLink>
+            <NavLink className="link" to="/series">
+              Séries
+            </NavLink>
+            <NavLink className="link" to="/mangas">
+              Mangas
+            </NavLink>
+            <NavLink className="link" to="/admin/">
+              Admin
+            </NavLink>
+          </>
+        )
+          : (
+            <>
+              <NavLink className="link" to="/admin/add">
+                Add
+              </NavLink>
+              <NavLink className="link" to="/admin/update">
+                Update
+              </NavLink>
+              <NavLink className="link" to="/admin/delete">
+                Delete
+              </NavLink>
+            </>
+          )}
       </div>
-      <div className="profil" onClick={() => { openModal(dispatch); navigate('/'); }}>
+      <div className="profil" onClick={() => { removeCookieUser('user'); openModal(dispatch); navigate('/'); }}>
         <div
           className="picture"
           style={picture ? { backgroundImage: `url("${process.env.REACT_APP_API_URL}img/profil/${picture}")` } : {}}

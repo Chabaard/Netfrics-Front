@@ -1,22 +1,17 @@
 @use 'reset';
 @use 'vars';
-
-body {
-  font-family: sans-serif;
-  background-color: vars.$background-color;
-}
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
-    scrollbar-width: auto;
+    scrollbar-width: 1px;
     scrollbar-color: vars.$primary-color vars.$background-color;
     box-sizing: border-box;
   }
 
   /* Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 1px;
+    height: 0.5rem;
   }
 
   *::-webkit-scrollbar-track {
@@ -27,9 +22,28 @@ body {
   *::-webkit-scrollbar-thumb {
     background-color: vars.$primary-color;
     border-radius: 10px;
-    border: 3px solid vars.$background-secondary-color;
   }
-  input{
+html {
+  height: 100vh;
+  width: calc(100vw - 1px);
+  &::-webkit-scrollbar {
+    width: 1px;
+    height: 12px;
+  }
+}
+
+#root {
+  height: 100%;
+}
+
+body {
+  padding-top: 5rem;
+  height: 100%;
+  font-family: sans-serif;
+  background-color: vars.$background-color;
+}
+
+  .input-text, .input-button{
     background: vars.$background-color;
     border: 1px solid vars.$primary-color;
     border-radius: 6px;
@@ -64,17 +78,7 @@ body {
   input:active {
     opacity: .5;
   }
-/* 
-  // or you can import your own font
-  @font-face {
-    font-family: 'Roboto';
-    src: url('../assets/fonts/Roboto-Regular.ttf');
-  }
 
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-*/
 .visible {
   visibility: visible !important;
 }

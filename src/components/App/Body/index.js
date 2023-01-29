@@ -14,20 +14,25 @@ function Body({ path }) {
   const [viewed, setViewed] = useState();
 
   async function userViews() {
-    const response = await request.get(`moviesviewed/${user.id}`);
+    const responseMovies = await request.get(`moviesviewed/${user.id}`);
     const responseSeries = await request.get(`seriesviewed/${user.id}`);
-    if (response) response.forEach((element) => { element.type = 'movies'; });
+    // const responseMangas = async () => { try { return await request.get(`mangasviewed/${user.id}`); } catch (err) { console.log(err); return null; } };
+    if (responseMovies) responseMovies.forEach((element) => { element.type = 'movies'; });
     if (responseSeries) responseSeries.forEach((element) => { element.type = 'series'; });
-    if (responseSeries && response) {
+    if (responseSeries && responseMovies) {
       switch (path) {
         case 'series':
           setViewed(responseSeries);
           break;
         case 'movies':
-          setViewed(response);
+          setViewed(responseMovies);
+          break;
+        case 'mangas':
+          // setViewed(responseMangas);
           break;
         default:
-          setViewed(response.concat(responseSeries));
+          // console.log(responseMovies.concat(responseSeries, await responseMangas()));
+          setViewed(responseMovies.concat(responseSeries));
           break;
       }
     }

@@ -5,11 +5,11 @@
   justify-content: center;
   position: relative;
   max-height: 60vh;
-  max-width: 100%;
+  width: 100%;
 }
 video{
   object-fit:contain;
-  max-width: 100%;
+  width: 100%;
   max-height: 100%;
   &::-webkit-media-controls-fullscreen-button{
     display: none;

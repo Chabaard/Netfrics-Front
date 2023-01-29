@@ -1,24 +1,29 @@
 /* eslint-disable brace-style */
 /* eslint-disable block-spacing */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { setUserData, setUsersData } from '../../../actions';
+
 import { closeModal } from '../../../utils/modal';
 import { request } from '../../../utils/request';
 import Signup from './Signup';
 import './styles.scss';
 
 function Login() {
+  console.log('login');
+  const [cookieUser, setCookieUser] = useCookies(['user']);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const listUsers = useSelector((state) => state.listUsers);
 
   const navigate = useNavigate();
+  const [listUsers, setListUsers] = useState();
 
-  function setUser(id) {
+  async function setUser(id) {
     closeModal(dispatch);
-    const userFind = listUsers.filter((u) => u.id === id)[0];
+    const userFind = await listUsers.filter((u) => u.id === id)[0];
+    setCookieUser('user', userFind);
     dispatch(setUserData(userFind));
   }
   async function trashAction(id) {
@@ -28,6 +33,16 @@ function Login() {
     }
     return null;
   }
+  useEffect(() => {
+    async function users() {
+      const response = await request.get(`listusers`);
+      setListUsers(response);
+    }
+    users();
+    if (cookieUser.user && listUsers) {
+      setUser(cookieUser.user.id);
+    }
+  });
   return (
     <div className="user-choice">
       <h3 className="title">Qui es-tu?</h3>

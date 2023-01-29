@@ -11,22 +11,25 @@
   gap: 1rem;
   border-bottom: 1px solid black;
   padding: 1rem;
-  & .current{
-    color: red;
-  }
+
   & > .links{
     align-items: center;
     display: flex;
     width: 100%;
     justify-content: center;
     gap: 1rem;
-    & > a > .link{
+    & > .link{
       transition: transform 150ms;
       &:hover{
         transform: scale(110%);
         transition: transform 150ms;
       }
     }
+  }
+  & .active{
+    color: red;
+    text-decoration: underline;
+    cursor:default;
   }
   & > .profil { 
     z-index: 1;
