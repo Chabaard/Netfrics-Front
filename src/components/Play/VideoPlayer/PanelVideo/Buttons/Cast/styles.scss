@@ -1,0 +1,9 @@
+@use '/src/styles/vars';
+
+
+
+video::-internal-media-controls-overlay-cast-button {
+  position: absolute;
+  top: 4rem;
+  width: 50px;
+}

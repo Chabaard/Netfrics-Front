@@ -1,0 +1,9 @@
+@use '/src/styles/vars';
+
+.admin{
+  display: flex;
+  justify-content: center;
+  height: calc(100% - 5rem);
+  width: 100%;
+  
+}

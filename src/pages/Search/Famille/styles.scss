@@ -1,0 +1,39 @@
+@use '/src/styles/vars';
+
+.famille{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+  &-title{
+    font-size: 1.5em;
+    padding: 0rem 0.5rem;
+  }
+  &-affiches {
+    align-items: center;
+    padding: 1rem 1.2rem;
+    height: 14vw;
+    min-height: 220px;
+    max-width: 100%;
+    min-width: 300px;
+    gap: 0.5rem;
+    display: flex;
+    overflow-x: auto;
+    justify-content: flex-start;
+
+  }
+}
+
+.too-many{
+  width: 100%;
+  &-affiches{
+    min-height: 390px;
+    height: 25vw;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+
+}

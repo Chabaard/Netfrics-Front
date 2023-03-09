@@ -1,0 +1,67 @@
+@use '/src/styles/vars';
+
+#panel-bottom, #panel-top {
+  position: absolute;
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  align-items: center;
+  bottom: 0;
+  & .left, .right{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  & #btns{
+    display: flex;
+    width: 95%;
+    height: 75px;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0rem;
+
+    & .btn-player{
+      color: vars.$primary-color;
+      transition: height 0.2s, width 0.2s;
+      cursor: pointer;
+      padding: 0.4rem;
+      height: 40px;
+      width: 40px;
+      border-radius: 100%;
+      transition: padding 0.3s;
+      &:hover, :active{
+        transition: padding 0.3s;
+        padding: 0.2rem;
+        background-color: rgba(153, 143, 143, 0.267);
+      }
+    }
+  }
+}
+#panel-top{
+  top: 0;
+}
+@media screen and (max-width: 550px) {
+  #panel-bottom {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    height: 65px;
+    align-items: center;
+    bottom: 0rem;
+  }
+  #panel-top {
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 100%);
+    top: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    bottom: 0rem;
+  }
+}

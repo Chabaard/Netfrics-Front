@@ -1,0 +1,29 @@
+@use '/src/styles/vars';
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: vars.$primary-color;
+  height: 100%;
+  width: 100%;
+  min-height: -webkit-fill-available;
+  // font-size: calc(10px + 0.390625vw);
+
+
+  /* Valeurs avec un mot-clé */
+  user-select: none;
+
+  /* Valeurs globales */
+  user-select: unset;
+
+  /* Valeurs spécifiques à Mozilla */
+  -moz-user-select: none;
+
+  /* Valeurs spécifiques à WebKit */
+  -webkit-user-select: none;
+
+  /* Valeurs spécifiques à Microsoft */
+  -ms-user-select: none;
+}

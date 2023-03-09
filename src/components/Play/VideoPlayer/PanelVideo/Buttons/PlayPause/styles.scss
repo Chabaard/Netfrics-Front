@@ -1,0 +1,38 @@
+@use '/src/styles/vars';
+
+#btn-play, #btn-pause {
+  color: vars.$primary-color;
+  border-radius: 100%;
+  width: auto;
+  transition: height 0.2s;
+  cursor: pointer;
+}
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid vars.$primary-color;
+  background-color: vars.$background-color;
+  height: 20%;
+  &:hover{
+    height: 21%;
+    transition: height 0.2s;
+  }
+}
+
+.bar {
+  color: vars.$primary-color;
+  transition: height 0.2s, width 0.2s;
+  cursor: pointer;
+  padding: 0.4rem;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  transition: padding 0.3s;
+  &:hover, :active{
+    transition: padding 0.3s;
+    padding: 0.2rem;
+    background-color: rgba(153, 143, 143, 0.267);
+  }
+}

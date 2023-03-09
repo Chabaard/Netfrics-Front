@@ -1,0 +1,41 @@
+@use '/src/styles/vars';
+
+#container-video{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  max-height: 60vh;
+  width: 100%;
+  &:fullscreen {
+    justify-content: center;
+    & #panel {
+      bottom: 0;
+    }
+  }
+
+}
+#btn-finished{
+  visibility: hidden;
+  position: absolute;
+  font-weight: bold;
+  bottom: 5rem;
+  right: 3rem;
+  border: none;
+  background-color: vars.$background-secondary-color;
+  color: vars.$primary-color;
+  border-radius: 0.6vh;
+  box-sizing: border-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.5s, background-color 0.5s;
+
+  &:hover, :active{
+    transition: color 0.5s, background-color 0.5s;
+    color: vars.$background-secondary-color;
+    background-color: vars.$primary-color;
+  }
+}
