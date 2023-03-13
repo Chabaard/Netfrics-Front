@@ -43,8 +43,6 @@ function UserProvider({ children }) {
   }
 
   useEffect(() => {
-    console.log(users)
-    console.log(isLoad)
     if (cookies.user && users && !users.filter((user) => Number(user.id) === Number(cookies.user.id))[0]) {
       removeUserCookie();
     }
