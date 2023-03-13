@@ -6,9 +6,11 @@ import { request } from '../utils/request';
 import { utils } from '../utils/utils';
 import { useCookies } from 'react-cookie';
 
+
 const VideoContext = createContext();
 
 function VideoProvider({ children }) {
+  const [isLoad, setIsLoad] = useState(false);
   const [cookies] = useCookies(['user']);
   const [families, setFamilies] = useState();
   const [moviesList, setMoviesList] = useState();
@@ -17,6 +19,7 @@ function VideoProvider({ children }) {
   const [userView, setUserView] = useState();
   const [onlyMovies, setOnlyMovies] = useState(false);
   const [onlySeries, setOnlySeries] = useState(false);
+  
 
   async function updateUserViews() {
     const viewed = {
@@ -35,7 +38,7 @@ function VideoProvider({ children }) {
       const viewedFamily = await updateUserViews(); // { name: string, movies: [], series: [] }
       const seriesFamily = utils.getSeries(await request.get('videos')); // { name: string, series: [] }
       const MoviesFamilies = utils.getMoviesFamilies(await request.get('videos')); // [ {}, {}... ]
-
+      setIsLoad(true);
       setSeries(seriesFamily);
       setMovies(response);
 
@@ -56,12 +59,14 @@ function VideoProvider({ children }) {
   }
 
   useEffect(() => {
+    setIsLoad(false);
+    setFamilies(null);
     updatesFamilies();
   }, [onlyMovies, onlySeries])
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values, object-curly-newline
-    <VideoContext.Provider value={{ updatesFamilies, families, series, movies, userView, updateUserViews, setOnlySeries, setOnlyMovies, onlySeries, onlyMovies }}>
+    <VideoContext.Provider value={{ updatesFamilies, families, series, movies, userView, updateUserViews, setOnlySeries, setOnlyMovies, onlySeries, onlyMovies, isLoad }}>
       {children}
     </VideoContext.Provider>
   );

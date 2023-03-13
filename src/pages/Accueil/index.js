@@ -1,19 +1,15 @@
 /* eslint-disable brace-style */
 /* eslint-disable no-case-declarations */
-import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useContext } from 'react';
 import Famille from '../../components/Famille';
 import Loader from '../../components/Loader';
 import { VideoContext } from '../../context/VideoContext';
-import Movies from '../../components/Movies';
-import './styles.scss';
 import { useLocation } from 'react-router-dom';
+import './styles.scss';
 
 function Accueil() {
-  const { families, updatesFamilies, setOnlySeries, setOnlyMovies } = useContext(VideoContext);
-  const [isLoad, setIsLoad] = useState(false);
+  const { families, updatesFamilies, setOnlySeries, setOnlyMovies, isLoad } = useContext(VideoContext);
   const location = useLocation();
-
   useEffect(() => {
     if (location.pathname === '/movies') {
       setOnlySeries(false); 
@@ -22,18 +18,12 @@ function Accueil() {
     else if (location.pathname === '/series') {
       setOnlyMovies(false);
       setOnlySeries(true); 
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    updatesFamilies();
-    setIsLoad(true)
-
-    return () => {
+    } else {
       setOnlyMovies(false);
       setOnlySeries(false); 
     }
-  }, []);
+  }, [location.pathname]);
+
   return (!isLoad ? <Loader />
     : (
       <div className="body">

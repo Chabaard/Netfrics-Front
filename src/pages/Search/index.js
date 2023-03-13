@@ -55,12 +55,12 @@ function Search() {
         <div className="search">
           {
             searchView.series && searchView.series.map((affiche) => (
-              <Affiche {...affiche} type={'series'} />
+              <Affiche key={affiche.poster} {...affiche} type={'series'} />
             ))
           }
           {
             searchView.movies && searchView.movies.map((affiche) => (
-              <Affiche {...affiche} type={'movies'} />
+              <Affiche key={affiche.poster} {...affiche} type={'movies'} />
             ))
           }
         </div>
