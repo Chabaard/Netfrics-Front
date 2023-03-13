@@ -1,0 +1,33 @@
+@use '/src/styles/vars';
+
+.menu {
+  position: relative;
+}
+.list-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 2;
+  border-radius: 0.5rem;
+  background-color: vars.$background-secondary-color;
+  padding: 0.5rem;
+}
+.link {
+  gap: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  background-color: vars.$background-color;
+  z-index: 2;
+  border-radius: 0.5rem;
+  min-width: 150px;
+  font-size: 1.4rem;
+  min-height: 50px;
+  align-items: center;
+  transition: background-color 0.5s, color 0.5s;
+  &:hover, :active {
+    transition: background-color 0.5s, color 0.5s;
+    background-color: vars.$primary-color;
+    color: vars.$background-color;
+  }
+}

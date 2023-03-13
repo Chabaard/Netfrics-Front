@@ -1,0 +1,56 @@
+@use '/src/styles/vars';
+
+.affiche{
+  height: 30vh;
+  width: 20vh;
+  transition: transform 2s, box-shadow 2s, z-index 2s;
+  border-radius: 10px;
+  & img{
+    border-radius: 10px;
+    height: 100%;
+    width: 20vh;
+  }
+
+  & .picture, .svg-picture{
+    transition: clip-path 3s, filter 3s;
+    clip-path: circle(100%);
+    cursor: pointer;
+  }
+  &:hover .picture, .svg-picture{
+    transition: clip-path 2s, filter 2s;
+    clip-path: circle(40%);
+    filter: sepia(100%);
+  }
+}
+.container-picture {
+  position: relative;
+}
+.svg-picture{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+}
+.star {
+  cursor: pointer;
+  position: absolute;
+  top: 0rem;
+  left: 50%;
+  background-color: vars.$background-color;
+  border-radius: 100%;
+  padding: 0.2rem;
+  transform: translate(-50%);
+  width: 30px;
+  height: 30px;
+  z-index: 0;
+}
+.no-download {
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+

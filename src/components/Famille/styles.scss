@@ -1,0 +1,56 @@
+@use '/src/styles/vars';
+
+.famille{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+  gap: 0.3rem;
+  &-title{
+    font-size: 1.5em;
+    padding: 0rem 0.5rem;
+  }
+  &-affiches {
+    align-items: center;
+    padding: 0rem 1.2rem;
+    height: 30vh;
+    min-height: 220px;
+    max-width: 100%;
+    min-width: 300px;
+    gap: 0.5rem;
+    display: flex;
+    overflow-x: auto;
+    justify-content: flex-start;
+    overflow-y: hidden;
+      /* Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    visibility: hidden;
+    width: 1px;
+    height: 0rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: vars.$background-secondary-color;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: vars.$primary-color;
+    border-radius: 10px;
+  }
+  }
+}
+
+.too-many{
+  width: 100%;
+  &-affiches{
+    min-height: 390px;
+    height: 25vw;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+
+}

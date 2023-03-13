@@ -5,6 +5,7 @@
     "browser": true
   },
   "rules": {
+    "max-len" : false,
     "brace-style": ["error", "stroustrup"],
     "no-param-reassign": [
       "error",

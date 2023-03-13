@@ -1,0 +1,54 @@
+@use '/src/styles/vars';
+
+#audio {
+  display: flex;
+  align-items: center;
+  &:hover #volume-level {
+    visibility: visible;
+    
+  }
+  &:hover, :active{
+    transition: padding 0.3s;
+    padding: 0.2rem;
+    background-color: rgba(153, 143, 143, 0.267);
+    border-radius: 20px;
+  }
+}
+#volume-level {
+  &:hover{
+    visibility: visible;
+  }
+  &:active{
+    visibility: visible;
+    transition: visibility 3s;
+
+  }
+  visibility: hidden;
+  transition: visibility 5s;
+  // transform: rotate(-90deg);
+  right: -50%;
+  cursor: pointer;
+  
+  background: linear-gradient(to right, vars.$primary-color 0%, vars.$primary-color 50%, #fff 50%, #fff 100%);
+  border-radius: 8px;
+  height: 7px;
+  width: 75px;
+  outline: none;   
+  -webkit-appearance: none;
+  
+  
+  &::-webkit-slider-thumb {
+    background-color: orange;
+    border-radius: 0;
+        
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    -webkit-appearance: none;
+    &:hover {
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
