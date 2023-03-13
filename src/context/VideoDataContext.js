@@ -35,8 +35,10 @@ function VideoDataProvider({ children }) {
     };
     switch (videoInfos.type) {
       case 'series':
+        console.log(videoInfos)
         data.series_id = videoInfos.series_id;
         data.episodes_id = videoInfos.id;
+        console.log(data)
         await request.post('serieviewed', data, 'json');
         break;
       case 'movies':
