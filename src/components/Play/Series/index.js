@@ -57,7 +57,7 @@ function Series() {
       const response = await request.get(`episodes/${epId}`);
       setSeason(getSeasonById(response.seasons_id));
       setEpisode(response);
-      setVideoInfos({ ...response, type: 'series' });
+      setVideoInfos({ ...response, type: 'series', series_id: Number(id) });
     }
     else {
       getSeries();

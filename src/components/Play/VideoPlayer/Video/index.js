@@ -36,8 +36,8 @@ function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
       onWaiting={notLoad}
       onSeeking={notLoad}
       onStalled={notLoad}
-      poster={`${process.env.REACT_APP_API_URL}affiche/${poster}`}
-      src={`${process.env.REACT_APP_API_URL}videos/${path}`}
+      poster={`${process.env.REACT_APP_DATA_URL}affiche/${poster}`}
+      src={`${process.env.REACT_APP_DATA_URL}videos/${path}`}
     />
   );
 }
