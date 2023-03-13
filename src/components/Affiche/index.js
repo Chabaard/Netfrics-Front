@@ -21,7 +21,7 @@ function Affiche({ id, poster, type }) {
     <div className="container-picture affiche">
       {isFavorites ? <RiStarFill onClick={onClickStar} className="star" /> : <RiStarLine onClick={onClickStar} className="star" />}
       <Link to={`/play/${type}/${id}`} state={{from: '/', replace: 'true'}} >  <svg className="svg-picture" onClick={onClick}  /> </Link>
-      <img className="no-download picture" src={`http://192.168.1.11:5000/affiche/${poster}`} alt="movie" />
+      <img className="no-download picture" src={`${process.env.REACT_APP_API_URL}affiche/${poster}`} alt="movie" />
     </div>
   );
 }

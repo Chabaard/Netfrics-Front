@@ -7,7 +7,7 @@ import './styles.scss';
 
 function Cast({ videoRef, path }) {
   function sendMedia(castContext) {
-    const mediaInfo = new chrome.cast.media.MediaInfo(`http://192.168.1.11:5000/videos/${path}`, 'video/mp4');
+    const mediaInfo = new chrome.cast.media.MediaInfo(`${process.env.REACT_APP_API_URL}videos/${path}`, 'video/mp4');
     const request = new chrome.cast.media.LoadRequest(mediaInfo);
     castContext.getCurrentSession().loadMedia(request);
   }
