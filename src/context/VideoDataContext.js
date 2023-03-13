@@ -35,10 +35,8 @@ function VideoDataProvider({ children }) {
     };
     switch (videoInfos.type) {
       case 'series':
-        console.log(videoInfos)
         data.series_id = videoInfos.series_id;
         data.episodes_id = videoInfos.id;
-        console.log(data)
         await request.post('serieviewed', data, 'json');
         break;
       case 'movies':
@@ -50,7 +48,7 @@ function VideoDataProvider({ children }) {
     }
   }
   async function getUserVideoData() {
-    if (!videoInfos) return;
+    if (!videoInfos || !cookies.user) return;
     let data = null;
     switch (videoInfos.type) {
       case 'series':

@@ -39,7 +39,9 @@ function App() {
       { cookies.user
         ? (
           <>
-            <NavBar {...cookies.user} />
+            <UserProvider>
+              <NavBar {...cookies.user} />
+            </UserProvider>
             <VideoProvider>
               <Routes>
                 <Route path="/" element={<> <Accueil path="all" /></>} />

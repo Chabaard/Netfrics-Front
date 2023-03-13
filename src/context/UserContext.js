@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { request } from '../utils/request';
 import { useCookies } from 'react-cookie';
+import { useLocation } from 'react-router';
 
 const UserContext = createContext();
 
@@ -12,6 +13,7 @@ function UserProvider({ children }) {
   const [isLoad, setIsLoad] = useState(false);
   const [cookies, setCookies, removeCookies] = useCookies(['user']);
   const [editMod, setEditMod] = useState(false);
+  const location = useLocation();
 
 
   async function updateUsers() {
@@ -36,28 +38,32 @@ function UserProvider({ children }) {
       }
     }
   }
+  async function removeUserCookie() {
+    removeCookies('user');
+  }
 
   useEffect(() => {
-    if (cookies.user && !users.filter((user) => Number(user.id) === Number(cookies.user.id))[0])
-    {
-      removeCookies('user');
+    console.log(users)
+    console.log(isLoad)
+    if (cookies.user && users && !users.filter((user) => Number(user.id) === Number(cookies.user.id))[0]) {
+      removeUserCookie();
     }
-  }, [users])
+    if (cookies.user && !users && isLoad) {
+      removeUserCookie();
+    }
+
+  }, [users, isLoad])
 
   useEffect(() => {
     updateUsers();
-  }, [cookies.user])
+  }, [cookies.user, location.pathname])
 
   useEffect(() => {
-    if (cookies.user && users && !users.filter((user) => Number(user.id) === Number(cookies.user.id))[0]) {
-      removeCookies('user');
-    } else {
-      updateUsers();
-    }
+    updateUsers();
   }, [])
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values, object-curly-newline
-    <UserContext.Provider value={{ updateUsers, users, isLoad, setCookies, deleteUser, editMod, setEditMod, createUser }}>
+    <UserContext.Provider value={{ updateUsers, users, isLoad, setCookies, deleteUser, editMod, setEditMod, createUser, removeUserCookie }}>
       {children}
     </UserContext.Provider>
   );
