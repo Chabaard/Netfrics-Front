@@ -36,7 +36,7 @@ function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
       onWaiting={notLoad}
       onSeeking={notLoad}
       onStalled={notLoad}
-      poster={`http://192.168.1.11:5000/affiche/${poster}`}
+      poster={`${process.env.REACT_APP_API_URL}affiche/${poster}`}
       src={`${process.env.REACT_APP_API_URL}videos/${path}`}
     />
   );
