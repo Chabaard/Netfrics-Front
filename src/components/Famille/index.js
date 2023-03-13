@@ -1,31 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Affiche from '../Affiche';
+import { useParams } from 'react-router-dom';
 import './styles.scss';
+import { VideoContext } from '../../context/VideoContext';
 
-function Famille({ movies, name, series }) {
-  function jsxSeries() {
-    return series.map((video) => (
-      <Affiche key={video.id} {...video} type="series" />
-    ));
-  }
-  function jsxMovies() {
-    return movies.map((video) => (
-      <Affiche key={video.id} {...video} type="movies" />
-    ));
-  }
+function Famille({ movies, name, series}) {
+  const { id } = useParams();
+  const { onlySeries, onlyMovies } = useContext(VideoContext);
+
   function getLength() {
     let length = 0;
-    if (movies) length += movies.length;
-    if (series) length += series.length;
+    if (movies && !onlySeries) length += movies.length;
+    if (series && !onlyMovies) length += series.length;
     return length;
   }
   return (
-    <div className={`famille ${getLength() >= 30 ? 'too-many' : ''}`}>
+    // ${getLength() >= 30 && 'too-many'}
+    <div className={`famille `}> 
+
       <h2 className="famille-title">{ name }</h2>
-      <div className={`famille-affiches ${getLength() >= 30 ? 'too-many-affiches' : ''}`}>
-        {series ? jsxSeries() : ''}
-        {movies ? jsxMovies() : ''}
+      {/* ${getLength() >= 30 && 'too-many-affiches'} */}
+      <div className={`famille-affiches `}>
+
+        {series && !onlyMovies && series.map((video) => (
+          Number(video.id) !== Number(id) && <Affiche key={video.id} {...video} type="series" />
+        ))}
+
+        {movies && !onlySeries && movies.map((video) => (
+          Number(video.id) !== Number(id) && <Affiche key={video.id} {...video} type="movies" />
+        ))}
+
       </div>
     </div>
 
@@ -34,14 +39,16 @@ function Famille({ movies, name, series }) {
 
 Famille.propTypes = {
   movies: PropTypes.array,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   series: PropTypes.array,
+  onlyMovies: PropTypes.bool,
+  onlySeries: PropTypes.bool,
 };
 Famille.defaultProps = {
   series: null,
   movies: null,
-  name: null,
-
+  onlyMovies: false,
+  onlySeries: false,
 };
 
 // == Export

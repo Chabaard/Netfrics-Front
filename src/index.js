@@ -1,10 +1,8 @@
 // == Import : npm
-import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import App from './App';
-import store from './store';
 import { VideoDataProvider } from './context/VideoDataContext';
 import { SearchProvider } from './context/SearchContext';
 
@@ -15,11 +13,9 @@ const rootReactElement = (
   <CookiesProvider>
     <VideoDataProvider>
       <SearchProvider>
-        <Provider store={store}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </Provider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </SearchProvider>
     </VideoDataProvider>
   </CookiesProvider>

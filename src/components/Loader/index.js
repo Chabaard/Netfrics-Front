@@ -4,20 +4,20 @@ import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-function Loader(absolute) {
+function Loader({isAbsolute}) {
   return (
-    <div className={`loader-container ${absolute ? 'absolute' : ''}`}>
+    <div className={`loader-container ${isAbsolute ? 'absolute' : ''}`}>
       <div className="loader" />
     </div>
   );
 }
 
 Loader.propTypes = {
-  absolute: PropTypes.bool,
+  isAbsolute: PropTypes.bool,
 };
 
 Loader.defaultProps = {
-  absolute: false,
+  isAbsolute: false,
 };
 // == Export
 export default React.memo(Loader);

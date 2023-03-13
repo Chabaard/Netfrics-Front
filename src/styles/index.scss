@@ -1,5 +1,75 @@
 @use 'reset';
 @use 'vars';
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  width: calc(100vw - 1px);
+  font-family: sans-serif;
+  background-color: vars.$background-color;
+    /* Valeurs avec un mot-clé */
+    user-select: none;
+    /* Valeurs globales */
+    user-select: unset;
+    /* Valeurs spécifiques à Mozilla */
+    -moz-user-select: none;
+    /* Valeurs spécifiques à WebKit */
+    -webkit-user-select: none;
+    /* Valeurs spécifiques à Microsoft */
+    -ms-user-select: none;
+}
+
+body, #root, .body {
+  height: 100%;
+}
+
+.input-text, .input-button{
+  background: vars.$background-color;
+  border: 1px solid vars.$primary-color;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  width: 100%;
+  color: vars.$primary-color;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  
+}
+input:hover,
+input:active,
+input:focus {
+  background-color: vars.$primary-color;
+  background-position: 0 0;
+  color: vars.$background-color;
+
+}
+input:active {
+  opacity: .5;
+}
+
+.visible {
+  visibility: visible !important;
+}
+.hidden {
+  visibility: hidden !important;
+}
+
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
@@ -23,65 +93,4 @@
     background-color: vars.$primary-color;
     border-radius: 10px;
   }
-html {
-  height: 100%;
-  width: calc(100vw - 1px);
-  &::-webkit-scrollbar {
-    width: 1px;
-    height: 12px;
-  }
-}
-
-#root {
-  height: 100%;
-}
-
-body {
-  height: 100%;
-  font-family: sans-serif;
-  background-color: vars.$background-color;
-}
-
-  .input-text, .input-button{
-    background: vars.$background-color;
-    border: 1px solid vars.$primary-color;
-    border-radius: 6px;
-    box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
-    box-sizing: border-box;
-    width: 100%;
-    color: vars.$primary-color;
-    cursor: pointer;
-    display: inline-block;
-    font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 16px;
-    min-height: 40px;
-    outline: 0;
-    padding: 12px 14px;
-    text-align: center;
-    text-rendering: geometricprecision;
-    text-transform: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: middle;
-   
-  }
-  input:hover,
-  input:active {
-    background-color: vars.$primary-color;
-    background-position: 0 0;
-    color: vars.$background-color;
-
-  }
-  input:active {
-    opacity: .5;
-  }
-
-.visible {
-  visibility: visible !important;
-}
-.hidden {
-  visibility: hidden !important;
-}
+  

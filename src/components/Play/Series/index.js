@@ -101,14 +101,11 @@ function Series() {
     }
   }, [episode]);
   function getvideo() {
-    function generateSeries() {
-      return <Famille key="series" series={series} />;
-    }
     return (
       <>
         <h2 className="title">{episode.name}</h2>
         <VideoPlayer poster={serie.poster} {...episode} changeEp={previousOrNextEpisode} />
-        {series ? generateSeries() : ''}
+        {series && <Famille key="series" series={series} name="Séries" />}
       </>
     );
   }

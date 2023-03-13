@@ -1,6 +1,9 @@
 @use '/src/styles/vars';
 
 .play{
+  overflow-y: auto;
+  max-width: 100%;
+  height: 100%;
   padding-top: 0.5rem;
   display: flex;
   gap: 0.5rem;

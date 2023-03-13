@@ -42,7 +42,7 @@ function VideoPlayer({ id, path, poster, changeEp }) {
   return (
     <div ref={containerRef} id="container-video" className="container">
       <Video {...{ id, path, poster, setIsLoad, setTimer, setVideoRef }} />
-      {isLoad ? '' : <Loader absolute />}
+      {isLoad ? '' : <Loader isAbsolute={true} />}
       {visible && isLoad ? (<PanelVideo {...{ changeEp: changeEp, videoRef, containerRef, path, timer, setTimer }} />) : '' }
       <button id="btn-finished" onClick={() => { changeEp(1); }} className="hidden" type="button"> Episode suivant ?</button>
     </div>

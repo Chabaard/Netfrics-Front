@@ -1,6 +1,7 @@
 @use '/src/styles/vars';
 
 .admin{
+  overflow-y: auto;
   display: flex;
   justify-content: center;
   height: calc(100% - 5rem);

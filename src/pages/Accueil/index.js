@@ -1,72 +1,50 @@
 /* eslint-disable brace-style */
 /* eslint-disable no-case-declarations */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useCookies } from 'react-cookie';
 import Famille from '../../components/Famille';
-import { request } from '../../utils/request';
-import './styles.scss';
-import { utils } from '../../utils/utils';
 import Loader from '../../components/Loader';
+import { VideoContext } from '../../context/VideoContext';
+import Movies from '../../components/Movies';
+import './styles.scss';
+import { useLocation } from 'react-router-dom';
 
 function Accueil() {
-  const [cookies] = useCookies(['user']);
-  const [dataFamilies, setDataFamilies] = useState();
-  const [userView, setUserView] = useState();
+  const { families, updatesFamilies, setOnlySeries, setOnlyMovies } = useContext(VideoContext);
   const [isLoad, setIsLoad] = useState(false);
+  const location = useLocation();
 
-  function generateMovies() {
-    return dataFamilies ? dataFamilies.map((famille) => (
-      famille.series > 1 || famille.movies ? <Famille key={famille.name} {...famille} /> : ''
-    )) : null;
-  }
-  function generateSeries() {
-    const series = utils.getSeries(dataFamilies);
-    return series.series[0] ? <Famille key={series.name} {...series} /> : null;
-  }
-  function generateViewed() {
-    if (userView) return <Famille key={userView.name} {...userView} />;
-    async function latestViewed() {
-      const viewed = {
-        name: 'Reprendre là où vous en entiez...',
-      };
-      viewed.movies = await request.get(`moviesviewed/${cookies.user.id}`);
-      viewed.series = await request.get(`seriesviewed/${cookies.user.id}`);
-
-      if (viewed.movies || viewed.series) setUserView(viewed);
-    }
-    latestViewed();
-    return '';
-  }
   useEffect(() => {
-    async function getVideos() {
-      try {
-        const response = await request.get('videos');
-        if (response) {
-          setDataFamilies(response);
-          setIsLoad(true);
-        }
-      }
-      catch (err) {
-        setIsLoad(true);
-        console.log(err);
-      }
+    if (location.pathname === '/movies') {
+      setOnlySeries(false); 
+      setOnlyMovies(true);
+    } 
+    else if (location.pathname === '/series') {
+      setOnlyMovies(false);
+      setOnlySeries(true); 
     }
-    getVideos();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    updatesFamilies();
+    setIsLoad(true)
+
+    return () => {
+      setOnlyMovies(false);
+      setOnlySeries(false); 
+    }
   }, []);
   return (!isLoad ? <Loader />
     : (
       <div className="body">
-        {generateViewed()}
-        {generateSeries()}
-        {generateMovies()}
+        {families && families.map((famille) => (
+          famille && <Famille key={famille.name} {...famille} />
+        ))
+        }
       </div>
     )
   );
 }
 
-Accueil.propTypes = {
-  path: PropTypes.string.isRequired,
-};
 // == Export
 export default React.memo(Accueil);

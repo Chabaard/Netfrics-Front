@@ -1,53 +1,70 @@
 /* eslint-disable brace-style */
 /* eslint-disable no-case-declarations */
 import React, { useState, useEffect, useContext } from 'react';
-import Famille from './Famille';
-import './styles.scss';
-import { utils } from '../../utils/utils';
 import Loader from '../../components/Loader';
 import { SearchContext } from '../../context/SearchContext';
+import { VideoContext } from '../../context/VideoContext';
+import Affiche from '../../components/Affiche';
+import './styles.scss';
 
 function Search() {
-  const dataFamilies = useSelector((state) => state.listMovies);
+  const { families, updatesFamilies } = useContext(VideoContext);
   const [isLoad, setIsLoad] = useState(false);
+  const [searchView, setSearchView] = useState({ name: 'Pas de recherche en cours... 2 caractères minimum' });
   const { searchRequest, setIsSearch } = useContext(SearchContext);
 
   // eslint-disable-next-line consistent-return
   function generateSearch() {
-    if (dataFamilies && searchRequest.length > 1) {
-      const searchView = {
-        name: `Résultats de la reecherche '${searchRequest}'`,
+    if (families && searchRequest.length > 1) {
+      const searchResult = {
+        name: `Résultats de la recherche '${searchRequest}'`,
         movies: [],
         series: [],
       };
-      dataFamilies.forEach((f) => {
-        if (f.movies !== null) {
+      families.forEach((f) => {
+        if (f.movies) {
           f.movies.forEach((movie) => {
             if (movie.name.toLowerCase().includes(searchRequest.toLowerCase())) {
-              searchView.movies.push(movie);
+              searchResult.movies.push(movie);
             }
           });
         }
-        if (f.name.toLowerCase().includes(searchRequest.toLowerCase()) && f.series !== null) {
+        if (f.name.toLowerCase().includes(searchRequest.toLowerCase()) && f.series) {
           f.series.forEach((serie) => {
-            searchView.series.push(serie);
+            searchResult.series.push(serie);
           });
         }
       });
-      return <Famille key={searchView.name} {...searchView} />;
+      setSearchView(searchResult);
+    } else {
+      setSearchView({ name: 'Pas de recherche en cours... 2 caractères minimum' });
     }
   }
   useEffect(() => {
-    setIsLoad(utils.getVideos(dispatch));
+    generateSearch();
+  }, [searchRequest]);
+  useEffect(() => {
+    setIsLoad(updatesFamilies());
 
     return () => setIsSearch(false);
   }, []);
-  return (!isLoad ? <Loader />
-    : (
-      <div className="search">
-        {generateSearch()}
-      </div>
-    )
+  return (
+    !isLoad
+      ? <Loader />
+      : (
+        <div className="search">
+          {
+            searchView.series && searchView.series.map((affiche) => (
+              <Affiche {...affiche} type={'series'} />
+            ))
+          }
+          {
+            searchView.movies && searchView.movies.map((affiche) => (
+              <Affiche {...affiche} type={'movies'} />
+            ))
+          }
+        </div>
+      )
   );
 }
 

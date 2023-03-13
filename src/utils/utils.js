@@ -2,7 +2,7 @@
 
 export const utils = {
   getSeries(families) {
-    const series = {
+    let series = {
       name: 'Séries',
       series: [],
     };
@@ -15,7 +15,31 @@ export const utils = {
         }
       });
     }
+    if (!series.series[0]) series = null;
     return series;
   },
-
+  getMovies(families) {
+    let movies = {
+      name: 'Films',
+      movies: [],
+    };
+    if (families) {
+      families.forEach((familie) => {
+        if (familie.movies) {
+          familie.movies.forEach((movie) => {
+            movies.movies.push(movie);
+          });
+        }
+      });
+    }
+    if (!movies.list[0]) movies = null;
+    return movies;
+  },
+  getMoviesFamilies(families) {
+    families.forEach((familie) => {
+        familie.list = familie.movies;
+        familie.series = [];
+    });
+    return families;
+  },
 };

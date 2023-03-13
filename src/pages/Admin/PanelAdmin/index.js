@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './styles.scss';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { request } from '../../../utils/request';
 import Item from './Item';
 import Loader from '../../../components/Loader';
-import { utils } from '../../../utils/utils';
+import { VideoContext } from '../../../context/VideoContext';
 
 function PanelAdmin({ refresh, setRefresh }) {
-  console.log('admin');
   const [isLoad, setIsLoad] = useState(true);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [files, setFiles] = useState();
   const [formData, setFormData] = useState([]);
-
-  const dispatch = useDispatch();
+  const { updatesFamilies } = useContext(VideoContext);
 
   async function getFiles() {
     const result = await request.get('refreshfiles');
@@ -57,6 +54,7 @@ function PanelAdmin({ refresh, setRefresh }) {
         setFormData([]);
         setIsCheckedAll(false);
         getFiles();
+        await updatesFamilies();
       }
     }
   }

@@ -10,7 +10,7 @@ import { RiFullscreenExitFill, RiFullscreenFill } from 'react-icons/ri';
 import './styles.scss';
 
 function FullScreen({ containerRef }) {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(document.fullscreenElement === containerRef.current);
   useEffect(() => {
     if (isFullscreen) containerRef.current.webkitRequestFullscreen();
     else if (document.fullscreenElement) document.exitFullscreen();

@@ -1,27 +1,28 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles.scss';
-import { useNavigate, useParams } from 'react-router-dom';
+import { RiStarFill, RiStarLine } from 'react-icons/ri';
 
 function Affiche({ id, poster, type }) {
-  const params = useParams();
   const navigate = useNavigate();
+  const [isFavorites, setIsFavorites] = useState(false);
+
+  const onClickStar = () => {
+    setIsFavorites(!isFavorites);
+  };
 
   const onClick = () => {
-    navigate(`/play/${type}/${id}`);
+    // navigate(`/play/${type}/${id}`);
   };
 
   return (
-    <>
-      { Number(params.id) === Number(id)
-        ? ''
-        : (
-          <div onClick={onClick} className="affiche">
-            <img className="affiche" src={`http://192.168.1.11:5000/affiche/${poster}`} alt="movie" />
-          </div>
-        )}
-    </>
+    <div className="container-picture affiche">
+      {isFavorites ? <RiStarFill onClick={onClickStar} className="star" /> : <RiStarLine onClick={onClickStar} className="star" />}
+      <Link to={`/play/${type}/${id}`} state={{from: '/', replace: 'true'}} >  <svg className="svg-picture" onClick={onClick}  /> </Link>
+      <img className="no-download picture" src={`http://192.168.1.11:5000/affiche/${poster}`} alt="movie" />
+    </div>
   );
 }
 

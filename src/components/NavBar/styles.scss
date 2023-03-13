@@ -18,13 +18,6 @@
     width: 100%;
     justify-content: center;
     gap: 1rem;
-    & > .link{
-      transition: transform 150ms;
-      &:hover{
-        transform: scale(110%);
-        transition: transform 150ms;
-      }
-    }
   }
   & .btn {
     height: 40px;

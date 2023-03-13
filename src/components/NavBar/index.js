@@ -1,63 +1,41 @@
 /* eslint-disable brace-style */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import { useCookies } from 'react-cookie';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './styles.scss';
-import { RiSearchLine, RiMenuLine, RiArrowGoBackLine } from 'react-icons/ri';
+import { RiSearchLine, RiArrowGoBackLine } from 'react-icons/ri';
 import { SearchContext } from '../../context/SearchContext';
+import Menu from './Menu';
 
 function NavBar({ login, picture }) {
   const [cookieUser, setCookieUser, removeCookieUser] = useCookies(['user']);
   const location = useLocation();
   const navigate = useNavigate();
-  const isPanelAdmin = location.pathname.includes('/admin');
   const { isSearch, setIsSearch, setSearchRequest } = useContext(SearchContext);
+  const searchBar = useRef();
 
   const isMobile = /Mobi/.test(navigator.userAgent);
 
+  useEffect(() => {
+    if (searchBar.current) {
+      setIsSearch(true);
+      searchBar.current.focus();
+    }
+  }, [location.pathname, isSearch]);
+  useEffect(() => {
+    if (location.pathname === '/search') {
+      setIsSearch(true);
+    }
+  }, []);
   return (
     <div className="navbar">
       { isSearch
-        ? <><RiArrowGoBackLine className="btn" onClick={() => { setIsSearch(!isSearch); setSearchRequest(''); navigate('/'); }} /> <input className="input-text" type="text" onChange={(e) => setSearchRequest(e.target.value)} placeholder="Rechercher" /></>
+        ? <><RiArrowGoBackLine className="btn" onClick={() => { setIsSearch(!isSearch); setSearchRequest(''); navigate('/'); }} /> <input ref={searchBar} className="input-text" type="text" onChange={(e) => { setSearchRequest(e.target.value); }} placeholder="Rechercher" /></>
         : (
           <>
-            {!isMobile
-              ? (
-                <div className="links">
-                  <NavLink className="link" to="/accueil">
-                    Accueil
-                  </NavLink>
-                  { !isPanelAdmin ? (
-                    <>
-                      <NavLink className="link" to="/films">
-                        Films
-                      </NavLink>
-                      <NavLink className="link" to="/series">
-                        Séries
-                      </NavLink>
-                      <NavLink className="link" to="/admin/">
-                        Admin
-                      </NavLink>
-                    </>
-                  )
-                    : (
-                      <>
-                        <NavLink className="link" to="/admin/add">
-                          Add
-                        </NavLink>
-                        <NavLink className="link" to="/admin/update">
-                          Update
-                        </NavLink>
-                        <NavLink className="link" to="/admin/delete">
-                          Delete
-                        </NavLink>
-                      </>
-                    )}
-                </div>
-              )
-              : <RiMenuLine onClick={() => { navigate('/'); }} className="btn" />}
+            <Menu />
 
             <RiSearchLine className="btn" onClick={() => { navigate('search'); setIsSearch(!isSearch);} } />
 

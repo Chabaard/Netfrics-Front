@@ -13,7 +13,7 @@ function Admin() {
 
   return (
     <div className="admin">
-      { adminPanel === ('add') ? <PanelAdmin setRefresh={setRefresh} refresh={refresh} /> : '' }
+      <PanelAdmin setRefresh={setRefresh} refresh={refresh} /> 
     </div>
   );
 }
