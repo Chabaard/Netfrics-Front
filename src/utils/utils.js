@@ -35,11 +35,24 @@ export const utils = {
     if (!movies.list[0]) movies = null;
     return movies;
   },
-  getMoviesFamilies(families) {
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  },
+  getRandomVideo(families) {
+    const nArray = [];
     families.forEach((familie) => {
-        familie.list = familie.movies;
-        familie.series = [];
+      if (familie.movies) {
+        familie.movies.forEach((movie) => {
+          nArray.push({movie, type: 'movies'})
+        });
+      }
+      if (familie.series) {
+        familie.series.forEach((serie) => {
+          nArray.push({serie, type: 'series'})
+        });
+      }
     });
-    return families;
+    const randomNumber = this.getRandomInt(nArray.length)
+    return nArray[randomNumber];
   },
 };

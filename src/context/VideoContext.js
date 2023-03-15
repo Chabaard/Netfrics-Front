@@ -13,14 +13,15 @@ function VideoProvider({ children }) {
   const [isLoad, setIsLoad] = useState(false);
   const [cookies] = useCookies(['user']);
   const [families, setFamilies] = useState();
-  const [moviesList, setMoviesList] = useState();
-  const [movies, setMovies] = useState();
-  const [series, setSeries] = useState();
+
   const [userView, setUserView] = useState();
   const [onlyMovies, setOnlyMovies] = useState(false);
   const [onlySeries, setOnlySeries] = useState(false);
   
-
+  async function getRandomVideo() {
+    const randomVideo = utils.getRandomVideo(await request.get('videos')); // [ {}, {}... ]
+    return randomVideo;
+  }
   async function updateUserViews() {
     const viewed = {
       name: 'Reprendre là où vous en entiez...',
@@ -28,6 +29,10 @@ function VideoProvider({ children }) {
     viewed.series  = await request.get(`seriesviewed/${cookies.user.id}`);
     viewed.movies  = await request.get(`moviesviewed/${cookies.user.id}`);
 
+    if (!viewed.movies && !viewed.series) {
+      setUserView(null); 
+      return null;
+    }
     if (viewed.movies || viewed.series) setUserView(viewed);
     return viewed;
   }
@@ -37,19 +42,19 @@ function VideoProvider({ children }) {
       const response = await request.get('videos');
       const viewedFamily = await updateUserViews(); // { name: string, movies: [], series: [] }
       const seriesFamily = utils.getSeries(await request.get('videos')); // { name: string, series: [] }
-      const MoviesFamilies = utils.getMoviesFamilies(await request.get('videos')); // [ {}, {}... ]
       setIsLoad(true);
-      setSeries(seriesFamily);
-      setMovies(response);
 
       if (onlySeries) {
-        setFamilies([viewedFamily, ...response].filter((familie) => familie.series));
+        if (viewedFamily) setFamilies([viewedFamily, ...response].filter((familie) => familie.series));
+        else setFamilies([...response].filter((familie) => familie.series));
       }
       else if (onlyMovies) {
-        setFamilies([viewedFamily, ...response].filter((familie) => familie.movies));
+        if (viewedFamily) setFamilies([viewedFamily, ...response].filter((familie) => familie.movies));
+        else setFamilies([...response].filter((familie) => familie.movies));
       }
       else {
-        setFamilies([viewedFamily, seriesFamily, ...response]);
+        if (viewedFamily) setFamilies([viewedFamily, seriesFamily, ...response]);
+        else setFamilies([seriesFamily, ...response]);
       }
 
     } catch (err) {
@@ -66,7 +71,7 @@ function VideoProvider({ children }) {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values, object-curly-newline
-    <VideoContext.Provider value={{ updatesFamilies, families, series, movies, userView, updateUserViews, setOnlySeries, setOnlyMovies, onlySeries, onlyMovies, isLoad }}>
+    <VideoContext.Provider value={{ updatesFamilies, families, userView, updateUserViews, setOnlySeries, setOnlyMovies, onlySeries, onlyMovies, isLoad, getRandomVideo }}>
       {children}
     </VideoContext.Provider>
   );
