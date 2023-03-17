@@ -51,7 +51,7 @@ function ListMenu({ setClickAway, setVisible, menuRef }) {
         <RiShuffleFill />
         <h2>Aléatoire</h2>
       </div>
-      <div className="link" onClick={() => { navigate('/favoris'); setVisible(false); }}>
+      <div className="link" onClick={() => { navigate('/favorite'); setVisible(false); }}>
         <RiStarLine />
         <h2>Favoris</h2>
       </div>

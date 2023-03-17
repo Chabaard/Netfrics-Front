@@ -17,6 +17,7 @@ import Accueil from './pages/Accueil';
 import { VideoDataContext } from './context/VideoDataContext';
 import { VideoProvider } from './context/VideoContext';
 import { UserProvider } from './context/UserContext';
+import Favorite from './pages/Favorite';
 
 // == Composant
 function App() {
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/movies" element={<> <Accueil /></>} />
                 <Route path="/series" element={<> <Accueil /></>} />
                 <Route path="/search" element={<> <Search /></>} />
+                <Route path="/favorite" element={<> <Favorite /></>} />
                 <Route path="/play/:type/:id" element={<> <Play /> </>} />
                 <Route path="/play/:type/:id/:epId" element={<> <Play /> </>} />
                 <Route path="/*" element={<> <NotFound {...cookies.user} /> </>} />

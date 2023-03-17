@@ -22,6 +22,11 @@ function Accueil() {
       setOnlyMovies(false);
       setOnlySeries(false); 
     }
+    return () => {
+      setOnlyMovies(false);
+      setOnlySeries(false); 
+    }
+
   }, [location.pathname]);
 
   return (!isLoad ? <Loader />

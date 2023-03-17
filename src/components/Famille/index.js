@@ -8,7 +8,6 @@ import { VideoContext } from '../../context/VideoContext';
 function Famille({ movies, name, series}) {
   const { id } = useParams();
   const { onlySeries, onlyMovies } = useContext(VideoContext);
-
   function getLength() {
     let length = 0;
     if (movies && !onlySeries) length += movies.length;

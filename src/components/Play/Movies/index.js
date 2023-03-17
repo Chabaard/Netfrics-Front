@@ -4,6 +4,7 @@
 // function
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { VideoContext } from '../../../context/VideoContext';
 import { VideoDataContext } from '../../../context/VideoDataContext';
 import { request } from '../../../utils/request';
 
@@ -15,11 +16,11 @@ import VideoPlayer from '../VideoPlayer';
 import './styles.scss';
 
 function Movies() {
+  const { families, updatesFamilies } = useContext(VideoContext);
   const { id } = useParams();
   const [data, setData] = useState();
   const navigate = useNavigate();
   const { setVideoInfos } = useContext(VideoDataContext);
-
   const handlerMovies = {
     async getMovies() {
       const response = await request.get(`movies/${id}`);
@@ -38,12 +39,16 @@ function Movies() {
     handlerMovies.getMovies();
   }, [id]);
 
+  useEffect(() => {
+    updatesFamilies();
+  }, []);
+  
   function jsx() {
     return (
       <>
         <h2 className="title">{data.name}</h2>
         <VideoPlayer {...data} changeEp={handlerMovies.previousOrNextEpisode} />
-        <Famille movies={data.families_movies} name={data.families_name} />
+        {families && data && <Famille { ...families.filter((familie) => familie.id === data.families_id)[0]}/>}
       </>
     );
   }
