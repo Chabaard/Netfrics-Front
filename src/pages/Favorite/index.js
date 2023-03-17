@@ -27,9 +27,9 @@ function Favorite() {
             }
           });
         }
-        if (f.series && f.name === "Séries") {
+        if (f.series && f.name !== "Séries") {
           f.series.forEach((serie) => {
-            if (serie.favorites && !nFavorites.series.includes(serie)) {
+            if (serie.favorites) {
               nFavorites.series.push(serie);
             }
           });
