@@ -16,6 +16,7 @@ import VideoPlayer from '../VideoPlayer';
 
 // Style
 import './styles.scss';
+import { utils } from '../../../utils/utils';
 
 function Series() {
   const [cookies] = useCookies(['user']);
@@ -41,7 +42,7 @@ function Series() {
   async function getSeries() {
     const response = await request.get(`series/${id}/${cookies.user.id}`);
     setSerie(response.series[0]);
-    setSeries(await request.get('series'));
+    setSeries(utils.getSeries(await request.get(`videos/${cookies.user.id}`)));
     const latest = await gotLatestViewed();
     if (latest) {
       navigate(`/play/series/${id}/${latest.episodes_id}`);
@@ -105,7 +106,7 @@ function Series() {
       <>
         <h2 className="title">{episode.name}</h2>
         <VideoPlayer poster={serie.poster} {...episode} changeEp={previousOrNextEpisode} />
-        {series && <Famille key="series" series={series} name="Séries" />}
+        {series && <Famille key="series" {...series} />}
       </>
     );
   }

@@ -12,14 +12,15 @@
   }
 
   & .picture, .svg-picture{
-    transition: clip-path 3s, filter 3s;
-    clip-path: circle(100%);
+    // transition: clip-path 3s, filter 3s;
+    // clip-path: circle(100%);
     cursor: pointer;
   }
   &:hover .picture, .svg-picture{
-    transition: clip-path 2s, filter 2s;
-    clip-path: circle(40%);
-    filter: sepia(100%);
+    transform: scale(101%);
+    // transition: clip-path 2s, filter 2s;
+    // clip-path: circle(40%);
+    // filter: sepia(100%);
   }
 }
 .container-picture {
@@ -34,15 +35,15 @@
 .star {
   cursor: pointer;
   position: absolute;
-  top: 0rem;
-  left: 50%;
+  top: 0.5rem;
+  right: 0.5rem;
   background-color: vars.$background-color;
   border-radius: 100%;
   padding: 0.2rem;
-  transform: translate(-50%);
+  // transform: translate(-50%);
   width: 30px;
   height: 30px;
-  z-index: 0;
+  z-index: 1;
 }
 .no-download {
   pointer-events: none;

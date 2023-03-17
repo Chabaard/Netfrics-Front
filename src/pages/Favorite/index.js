@@ -2,64 +2,62 @@
 /* eslint-disable no-case-declarations */
 import React, { useState, useEffect, useContext } from 'react';
 import Loader from '../../components/Loader';
-import { SearchContext } from '../../context/SearchContext';
 import { VideoContext } from '../../context/VideoContext';
 import Affiche from '../../components/Affiche';
 import './styles.scss';
 
-function Search() {
+function Favorite() {
   const { onlyFamilies, updatesFamilies } = useContext(VideoContext);
   const [isLoad, setIsLoad] = useState(false);
-  const [searchView, setSearchView] = useState({ name: 'Pas de recherche en cours... 2 caractères minimum' });
-  const { searchRequest, setIsSearch } = useContext(SearchContext);
+  const [favorites, setfavorites] = useState({ name: "Pas de favoris, restez appuyé sur une affiche pour faire apparaître l'étoile" });
 
   // eslint-disable-next-line consistent-return
-  function generateSearch() {
-    if (onlyFamilies && searchRequest.length > 1) {
-      const searchResult = {
-        name: `Résultats de la recherche '${searchRequest}'`,
+  function generateFavorites() {
+    if (onlyFamilies) {
+      const nFavorites = {
+        name: `Vos favoris`,
         movies: [],
         series: [],
       };
       onlyFamilies.forEach((f) => {
         if (f.movies) {
           f.movies.forEach((movie) => {
-            if (movie.name.toLowerCase().includes(searchRequest.toLowerCase())) {
-              searchResult.movies.push(movie);
+            if (movie.favorites) {
+              nFavorites.movies.push(movie);
             }
           });
         }
-        if (f.name.toLowerCase().includes(searchRequest.toLowerCase()) && f.series) {
+        if (f.series && f.name === "Séries") {
           f.series.forEach((serie) => {
-            searchResult.series.push(serie);
+            if (serie.favorites && !nFavorites.series.includes(serie)) {
+              nFavorites.series.push(serie);
+            }
           });
         }
       });
-      setSearchView(searchResult);
+      setfavorites(nFavorites);
     } else {
-      setSearchView({ name: 'Pas de recherche en cours... 2 caractères minimum' });
+      setfavorites({ name: "Pas de favoris, restez appuyé sur une affiche pour faire apparaître l'étoile" });
     }
   }
   useEffect(() => {
-    generateSearch();
-  }, [searchRequest]);
+    generateFavorites();
+  }, [onlyFamilies]);
   useEffect(() => {
     setIsLoad(updatesFamilies());
-
-    return () => setIsSearch(false);
   }, []);
   return (
     !isLoad
       ? <Loader />
       : (
-        <div className="search">
+        <div className="favorite">
           {
-            searchView.series && searchView.series.map((affiche) => (
+            favorites.series && favorites.series.map((affiche) => (
               <Affiche key={affiche.poster} {...affiche} type={'series'} />
             ))
           }
           {
-            searchView.movies && searchView.movies.map((affiche) => (
+            favorites.movies && favorites.movies.map((affiche) => (
               <Affiche key={affiche.poster} {...affiche} type={'movies'} />
             ))
           }
@@ -69,4 +67,4 @@ function Search() {
 }
 
 // == Export
-export default React.memo(Search);
+export default React.memo(Favorite);
