@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = process.env.REACT_APP_API_URL;
-
+console.log(api)
 export const request = {
   async get(route, id) {
     const response = id

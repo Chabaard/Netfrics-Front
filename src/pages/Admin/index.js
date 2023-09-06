@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import PanelAdmin from './PanelAdmin';
 import './styles.scss';
+import ImportPanel from './ImportPanel';
 
 function Admin() {
   console.log('admin');
@@ -13,7 +14,7 @@ function Admin() {
 
   return (
     <div className="admin">
-      <PanelAdmin setRefresh={setRefresh} refresh={refresh} /> 
+      <ImportPanel setRefresh={setRefresh} refresh={refresh} /> 
     </div>
   );
 }
