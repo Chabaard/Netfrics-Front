@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { VideoContext } from '../../../context/VideoContext';
 import { VideoDataContext } from '../../../context/VideoDataContext';
 import { request } from '../../../utils/request';
+import { UrlContext } from '../../../context/UrlContext';
 
 // Component
 import Famille from '../../Famille';
@@ -16,6 +17,7 @@ import VideoPlayer from '../VideoPlayer';
 import './styles.scss';
 
 function Movies() {
+  const { url } = useContext(UrlContext)
   const { families, updatesFamilies } = useContext(VideoContext);
   const { id } = useParams();
   const [data, setData] = useState();
@@ -23,7 +25,7 @@ function Movies() {
   const { setVideoInfos } = useContext(VideoDataContext);
   const handlerMovies = {
     async getMovies() {
-      const response = await request.get(`movies/${id}`);
+      const response = await request.get({url ,route: `movies/${id}`});
       setData(response);
       setVideoInfos({...response, type: 'movies' });
     },

@@ -5,19 +5,22 @@ import { CookiesProvider } from 'react-cookie';
 import App from './App';
 import { VideoDataProvider } from './context/VideoDataContext';
 import { SearchProvider } from './context/SearchContext';
+import { UrlProvider } from './context/UrlContext';
 
 // == Render
 // 1. Élément React racine (celui qui contient l'ensemble de l'app)
 //    => crée une structure d'objets imbriqués (DOM virtuel)
 const rootReactElement = (
   <CookiesProvider>
-    <VideoDataProvider>
-      <SearchProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </SearchProvider>
-    </VideoDataProvider>
+    <UrlProvider>
+      <VideoDataProvider>
+        <SearchProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SearchProvider>
+      </VideoDataProvider>
+    </UrlProvider>
   </CookiesProvider>
 );
 

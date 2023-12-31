@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useCookies } from 'react-cookie';
 import { request } from '../utils/request';
+import { UrlContext } from './UrlContext';
 
 const VideoDataContext = createContext();
 
 function VideoDataProvider({ children }) {
+  const { url } = useContext(UrlContext);
   const [cookies] = useCookies(['user']);
   const [timer, setTimer] = useState(0);
   const [videoInfos, setVideoInfos] = useState();
@@ -37,11 +39,11 @@ function VideoDataProvider({ children }) {
       case 'series':
         data.series_id = videoInfos.series_id;
         data.episodes_id = videoInfos.id;
-        await request.post('serieviewed', data, 'json');
+        await request.post({url, route: 'serieviewed', data, type: 'json'});
         break;
       case 'movies':
         data.movies_id = videoInfos.id;
-        await request.post('movieviewed', data, 'json');
+        await request.post({url, route: 'movieviewed', data, type: 'json'});
         break;
       default:
         console.log('no type found');
@@ -52,14 +54,14 @@ function VideoDataProvider({ children }) {
     let data = null;
     switch (videoInfos.type) {
       case 'series':
-        data = await request.get(`serieviewed/${videoInfos.id}/${cookies.user.id}`);
+        data = await request.get({url, route:`serieviewed/${videoInfos.id}/${cookies.user.id}`});
         if (data) {
           setUserVideoData(data);
           setTimer(data.timer);
         }
         break;
       case 'movies':
-        data = await request.get(`movieviewed/${videoInfos.id}/${cookies.user.id}`);
+        data = await request.get({url, route: `movieviewed/${videoInfos.id}/${cookies.user.id}`});
         if (data) {
           setUserVideoData(data);
           setTimer(data.timer);

@@ -4,8 +4,10 @@ import React, { useRef, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss';
 import { VideoDataContext } from '../../../../context/VideoDataContext';
+import { UrlContext } from '../../../../context/UrlContext';
 
 function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
+  const { url } = useContext(UrlContext);
   const { setVideoDuration, videoInfos, saveUserVideoData } = useContext(VideoDataContext);
   const videoRef = useRef();
 
@@ -36,8 +38,8 @@ function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
       onWaiting={notLoad}
       onSeeking={notLoad}
       onStalled={notLoad}
-      poster={`${process.env.REACT_APP_DATA_URL}affiche/${poster}`}
-      src={`${process.env.REACT_APP_DATA_URL}videos/${path}`}
+      poster={`${url}/affiche/${poster}`}
+      src={`${url}/videos/${path}`}
     />
   );
 }

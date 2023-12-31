@@ -1,0 +1,32 @@
+@use '/src/styles/vars';
+
+.config {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.copy {
+      /* Valeurs avec un mot-clé */
+      user-select: all;
+      /* Valeurs globales */
+      user-select: all;
+      /* Valeurs spécifiques à Mozilla */
+      -moz-user-select: all;
+      /* Valeurs spécifiques à WebKit */
+      -webkit-user-select: all;
+      /* Valeurs spécifiques à Microsoft */
+      -ms-user-select: all;
+}

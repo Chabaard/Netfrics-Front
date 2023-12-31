@@ -7,8 +7,10 @@ import { VideoContext } from '../../../context/VideoContext';
 import Folder from './Folder';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import Files from './Files';
+import { UrlContext } from '../../../context/UrlContext';
 
 function ImportPanel({ refresh, setRefresh }) {
+  const { url } = useContext(UrlContext);
   const [isLoad, setIsLoad] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [files, setFiles] = useState();
@@ -16,7 +18,7 @@ function ImportPanel({ refresh, setRefresh }) {
   const { updatesFamilies } = useContext(VideoContext);
 
    async function getFiles() {
-    const result = await request.get('refreshfiles');
+    const result = await request.get({url, route: 'refreshfiles'});
     if (result) {
       setFiles(result);
       setIsLoad(false);
@@ -48,7 +50,7 @@ function ImportPanel({ refresh, setRefresh }) {
     refreshFormData();
     console.log(formData);
     // if (formData.length > 0) {
-    //   const response = await request.post('add/videos', { data: formData }, 'json');
+    //   const response = await request.post({url, route: 'add/videos', data: { data: formData }, type: 'json'});
     //   setIsLoad(true);
     //   if (response) {
     //     setFormData([]);

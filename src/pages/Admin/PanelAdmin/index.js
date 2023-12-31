@@ -5,8 +5,10 @@ import { request } from '../../../utils/request';
 import Item from './Item';
 import Loader from '../../../components/Loader';
 import { VideoContext } from '../../../context/VideoContext';
+import { UrlContext } from '../../../context/UrlContext';
 
 function PanelAdmin({ refresh, setRefresh }) {
+  const { url } = useContext(UrlContext);
   const [isLoad, setIsLoad] = useState(true);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [files, setFiles] = useState();
@@ -14,7 +16,7 @@ function PanelAdmin({ refresh, setRefresh }) {
   const { updatesFamilies } = useContext(VideoContext);
 
   async function getFiles() {
-    const result = await request.get('refreshfiles');
+    const result = await request.get({url, route: 'refreshfiles'});
     if (result) {
       setFiles(result);
       setIsLoad(false);
@@ -49,7 +51,7 @@ function PanelAdmin({ refresh, setRefresh }) {
     e.preventDefault();
     console.log(formData);
     // if (formData.length > 0) {
-    //   const response = await request.post('add/videos', { data: formData }, 'json');
+    //   const response = await request.post({url, route:'add/videos', data: { data: formData }, type: 'json'});
     //   setIsLoad(true);
     //   if (response) {
     //     setFormData([]);
