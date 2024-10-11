@@ -53,7 +53,7 @@ module.exports = merge(common, {
   },
 
   devServer: {
-    https: true,
+    https: false,
     client: {
       overlay: true,
       logging: 'warn',

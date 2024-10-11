@@ -13,10 +13,10 @@ function UrlProvider({ children }) {
   const [url, setUrl] = useState(cookies.url);
   const [isLoad, setIsLoad] = useState(false);
 
-  const testUrl = async (url) => {
+  const testUrl = async (newUrl) => {
     try {
-      const response = await axios.get(`${url}/testurl`)
-      console.error(response, `test de ${url}/testurl`)
+      console.error(response, `test de ${newUrl}/testurl`)
+      const response = await axios.get(`${newUrl}/testurl`)
       if (response) {
         return true;
       } else {
@@ -29,21 +29,21 @@ function UrlProvider({ children }) {
     }
   } 
 
-  async function updateUrl(url) {
-    if (await testUrl(url)) {
-      setUrl(url);
+  async function updateUrl(newUrl) {
+    if (await testUrl(newUrl)) {
+      setUrl(newUrl);
       setIsLoad(true);
-      setCookies('url', url);
+      setCookies('url', newUrl);
     } else {
       return "L'url indiqué ne fonctionne pas.";
     }
   }
 
-  async function createUrl(url) {
-    if (await testUrl(url)) {
-      setUrl(url)
+  async function createUrl(newUrl) {
+    if (await testUrl(newUrl)) {
+      setUrl(newUrl)
       setIsLoad(true);
-      setCookies('url', url);
+      setCookies('url', newUrl);
     } else {
       return "L'url indiqué ne fonctionne pas.";
     }
