@@ -1,0 +1,63 @@
+@use '/src/styles/vars';
+
+.form-panel-admin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.2rem;
+
+  & .admin-grid-import-top {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 40px 40px 1fr 8ch;
+    grid-gap: 1rem;
+    background-color: #4b5162;
+    align-items: center;
+  }
+
+  & .admin-grid-import-bottom {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  & .admin-grid-import-middle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    height: 100%;
+    overflow-y: auto;
+    margin: 0.3rem 0;
+    background-color: #2c2c33;
+    padding: 0 0.2rem;
+
+  }
+  .grid-item {
+    align-items: center;
+    min-height: 2rem;
+    display: grid;
+    grid-template-columns: 2rem 2rem 1fr 8ch;
+    grid-gap: 1rem;
+    background-color: vars.$background-secondary-color;
+    border-radius: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    place-items: center;
+  }
+  & .unroll, .checkbox {
+    font-size: 2rem;
+    
+    & svg {
+      vertical-align: bottom;
+    }
+  }
+  & .name, .import, .unroll {
+    text-align: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10; /* Nombre de lignes à afficher avant la troncature */
+    -webkit-box-orient: vertical;
+    -webkit-box-align: center;
+  }
+}
+

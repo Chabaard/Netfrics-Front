@@ -1,0 +1,6 @@
+@use '/src/styles/vars';
+.form-panel-admin {
+  & .files {
+    margin-left: 1rem;
+  }
+}

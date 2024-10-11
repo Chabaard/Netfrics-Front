@@ -1,21 +1,19 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
 
-const api = process.env.REACT_APP_API_URL;
-
 export const request = {
-  async get(route, id) {
+  async get({route, id, url}) {
     const response = id
-      ? await axios.get(`${api}${route}/${id}`)
-      : await axios.get(`${api}${route}`);
+      ? await axios.get(`${url}/${route}/${id}`)
+      : await axios.get(`${url}/${route}`);
     return response.data.data;
   },
-  async delete(route, id) {
-    const response = await axios.delete(`${api}${route}/${id}`);
+  async delete({route, id, url}) {
+    const response = await axios.delete(`${url}/${route}/${id}`);
     return response.data.data;
   },
-  async post(route, data, type) {
-    const response = await axios.post(`${api}${route}`, data, {
+  async post({route, data, type, url}) {
+    const response = await axios.post(`${url}/${route}`, data, {
       headers: type === 'json' ? { 'Content-Type': 'application/json' } : { 'Content-Type': 'multipart/form-data' },
     });
     return response.data.data;

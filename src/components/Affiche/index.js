@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import './styles.scss';
 import { RiStarFill, RiStarLine } from 'react-icons/ri';
 import { VideoContext } from '../../context/VideoContext';
+import { UrlContext } from '../../context/UrlContext';
 
 function Affiche({ id, poster, type, favorites }) {
+  const { url } = useContext(UrlContext);
   const { addFavorites, removeFavorites } = useContext(VideoContext);
   const navigate = useNavigate();
   const [isFavorites, setIsFavorites] = useState(favorites);
@@ -30,7 +32,7 @@ function Affiche({ id, poster, type, favorites }) {
     <div className="container-picture affiche">
       {isFavorites ? <RiStarFill onClick={onClickStar} className="star" /> : <RiStarLine onClick={onClickStar} className="star" />}
       <svg className="svg-picture" onClick={onClick}  />
-      <img className="no-download picture" src={`${process.env.REACT_APP_DATA_URL}affiche/${poster}`} alt="movie" />
+      <img className="no-download picture" src={`${url}/affiche/${poster}`} alt="movie" />
     </div>
   );
 }

@@ -6,9 +6,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { request } from '../../../utils/request';
+import { UrlContext } from '../../../context/UrlContext';
+import { VideoDataContext } from '../../../context/VideoDataContext';
 
 // Component
-import { VideoDataContext } from '../../../context/VideoDataContext';
 import DropDownSelect from '../DropDownSelect';
 import Famille from '../../Famille';
 import Loader from '../../Loader';
@@ -23,6 +24,7 @@ function Series() {
   const navigate = useNavigate();
   const [series, setSeries] = useState();
   const { setVideoInfos } = useContext(VideoDataContext);
+  const { url } = useContext(UrlContext)
 
   const [isLoad, setIsLoad] = useState(false);
   const { id, epId } = useParams();
@@ -35,14 +37,14 @@ function Series() {
 
   // eslint-disable-next-line consistent-return
   async function gotLatestViewed() {
-    const response = await request.get(`latestepisodeviewed/${id}/${cookies.user.id}`);
+    const response = await request.get({url ,route: `latestepisodeviewed/${id}/${cookies.user.id}`});
     if (response) return response[0];
   }
 
   async function getSeries() {
-    const response = await request.get(`series/${id}/${cookies.user.id}`);
+    const response = await request.get({url ,route:`series/${id}/${cookies.user.id}`});
     setSerie(response.series[0]);
-    setSeries(utils.getSeries(await request.get(`videos/${cookies.user.id}`)));
+    setSeries(utils.getSeries(await request.get({url ,route:`videos/${cookies.user.id}`})));
     const latest = await gotLatestViewed();
     if (latest) {
       navigate(`/play/series/${id}/${latest.episodes_id}`);
@@ -55,7 +57,7 @@ function Series() {
   }
   async function getEpisode() {
     if (serie && epId) {
-      const response = await request.get(`episodes/${epId}`);
+      const response = await request.get({url ,route:`episodes/${epId}`});
       setSeason(getSeasonById(response.seasons_id));
       setEpisode(response);
       setVideoInfos({ ...response, type: 'series', series_id: Number(id) });

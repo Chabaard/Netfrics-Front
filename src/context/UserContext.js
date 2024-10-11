@@ -1,14 +1,17 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { request } from '../utils/request';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router';
+import { UrlContext } from './UrlContext';
 
 const UserContext = createContext();
 
 function UserProvider({ children }) {
+  const { url } = useContext(UrlContext)
+
   const [users, setUsers] = useState();
   const [isLoad, setIsLoad] = useState(false);
   const [cookies, setCookies, removeCookies] = useCookies(['user']);
@@ -17,14 +20,14 @@ function UserProvider({ children }) {
 
 
   async function updateUsers() {
-    const response = await request.get('listusers');
+    const response = await request.get({url ,route: 'listusers'});
     setUsers(response);
     setIsLoad(true);
     return response;
   }
 
   async function createUser(formData) {
-    const response = await request.post('user', formData);
+    const response = await request.post({url, route: 'user', data: formData});
     if (response) {
       updateUsers();
     }
@@ -32,7 +35,7 @@ function UserProvider({ children }) {
 
   async function deleteUser(id) {
     if (window.confirm("Ëtes-vous sûr de vouloir supprimer l'utilisateur ?")) {
-      const response = await request.delete('user', id);
+      const response = await request.delete({url, route:'user', id});
       if (response) {
         updateUsers();
       }

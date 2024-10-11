@@ -1,0 +1,19 @@
+@use '/src/styles/vars';
+
+.form-panel-admin {
+  & .folder {
+    display: grid;
+    grid-gap: 0.3rem;
+    border-radius: 10px;
+
+    & .folder {
+      margin-left: 1rem;
+    }
+    
+    & > .title {
+      font-size: 1.2rem;
+      border-top: 3px solid orange;
+      border-bottom: 3px solid orange;
+    }
+  }
+}

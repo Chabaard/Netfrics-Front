@@ -1,10 +1,11 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { request } from '../utils/request';
 import { utils } from '../utils/utils';
 import { useCookies } from 'react-cookie';
+import { UrlContext } from './UrlContext';
 
 
 const VideoContext = createContext();
@@ -16,6 +17,8 @@ function VideoProvider({ children }) {
   const [families, setFamilies] = useState();
   const [onlyFamilies, setOnlyFamilies] = useState();
 
+  const { url } = useContext(UrlContext);
+
   const [userView, setUserView] = useState();
   const [onlyMovies, setOnlyMovies] = useState(false);
   const [onlySeries, setOnlySeries] = useState(false);
@@ -26,18 +29,18 @@ function VideoProvider({ children }) {
     else if (type === "movies") data.movies_id = id;
     else return 'no type found';
 
-    await request.post('api/favorite', data, 'json');
+    await request.post({url, route: 'api/favorite', data, type: 'json'});
     setIsLoad(false);
     updatesFamilies();
   }
   async function removeFavorites(type, id) {
-    await request.delete(`api/favorite/${type}/${cookies.user.id}`, id);
+    await request.delete({url, route: `api/favorite/${type}/${cookies.user.id}`, id});
     setIsLoad(false);
     updatesFamilies();
   }
 
   async function getRandomVideo() {
-    const randomVideo = utils.getRandomVideo(await request.get(`videos/${cookies.user.id}`)); // [ {}, {}... ]
+    const randomVideo = utils.getRandomVideo(await request.get({url, route: `videos/${cookies.user.id}`})); // [ {}, {}... ]
     return randomVideo;
   }
 
@@ -45,8 +48,8 @@ function VideoProvider({ children }) {
     const viewed = {
       name: 'Reprendre là où vous en entiez...',
     };
-    viewed.series  = await request.get(`seriesviewed/${cookies.user.id}`);
-    viewed.movies  = await request.get(`moviesviewed/${cookies.user.id}`);
+    viewed.series  = await request.get({url, route: `seriesviewed/${cookies.user.id}`});
+    viewed.movies  = await request.get({url, route: `moviesviewed/${cookies.user.id}`});
 
     if (!viewed.movies && !viewed.series) {
       setUserView(null); 
@@ -58,9 +61,9 @@ function VideoProvider({ children }) {
 
   async function updatesFamilies() {
     try {
-      const response = await request.get(`videos/${cookies.user.id}`);
+      const response = await request.get({url, route: `videos/${cookies.user.id}`});
       const viewedFamily = await updateUserViews(); // { name: string, movies: [], series: [] }
-      const seriesFamily = utils.getSeries(await request.get(`videos/${cookies.user.id}`)); // { name: string, series: [] }
+      const seriesFamily = utils.getSeries(await request.get({url, route: `videos/${cookies.user.id}`})); // { name: string, series: [] }
       setIsLoad(true);
       setOnlyFamilies([seriesFamily, ...response]);
 

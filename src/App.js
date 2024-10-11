@@ -18,11 +18,12 @@ import { VideoDataContext } from './context/VideoDataContext';
 import { VideoProvider } from './context/VideoContext';
 import { UserProvider } from './context/UserContext';
 import Favorite from './pages/Favorite';
+import Url from './pages/Url';
 
 // == Composant
 function App() {
   const { saveUserVideoData, resetContext, videoInfos } = useContext(VideoDataContext);
-  const [cookies] = useCookies(['user']);
+  const [cookies] = useCookies(['user', 'url']);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,8 +38,13 @@ function App() {
 
   return (
     <main className="app">
-      { cookies.user
-        ? (
+      { !cookies.url ? ( <Url />) : !cookies.user && (
+          <UserProvider>
+            <Login />
+          </UserProvider>
+        )}
+
+      { cookies.user && (
           <>
             <VideoProvider>
               <UserProvider>
@@ -59,13 +65,7 @@ function App() {
               </Routes>
             </VideoProvider>
           </>
-        )
-        : (
-          <UserProvider>
-            <Login />
-          </UserProvider>
-        )
-        }
+      )}
     </main>
   );
 }

@@ -1,13 +1,17 @@
 /* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
-import React, { useRef, useEffect, useContext} from 'react';
+import React, { useRef, useEffect, useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss';
 import { VideoDataContext } from '../../../../context/VideoDataContext';
+import { UrlContext } from '../../../../context/UrlContext';
 
 function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
+  const { url } = useContext(UrlContext);
   const { setVideoDuration, videoInfos, saveUserVideoData } = useContext(VideoDataContext);
   const videoRef = useRef();
+
+  const [saveData, setSaveData] = useState(null);
 
   useEffect(() => {
     setVideoRef(videoRef);
@@ -23,6 +27,17 @@ function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
     setIsLoad(false);
   }
 
+  async function onPlay() {
+    clearInterval(saveData);
+    const interval = setInterval(async () => {
+      await saveUserVideoData();
+    }, 30000);
+    setSaveData(interval);
+  }
+
+  async function onStopPlaying () {
+    clearInterval(saveData)
+  }
   window.onbeforeunload = async () => {
     await saveUserVideoData();
   };
@@ -31,13 +46,15 @@ function Video({ path, poster, setIsLoad, setTimer, setVideoRef }) {
     <video
       id="video"
       ref={videoRef}
+      onPlay={onPlay}
+      onPause={onStopPlaying}
       onCanPlay={canPlay}
       onTimeUpdate={timeUpdate}
       onWaiting={notLoad}
       onSeeking={notLoad}
       onStalled={notLoad}
-      poster={`${process.env.REACT_APP_DATA_URL}affiche/${poster}`}
-      src={`${process.env.REACT_APP_DATA_URL}videos/${path}`}
+      poster={`${url}/affiche/${poster}`}
+      src={`${url}/videos/${path}`}
     />
   );
 }
